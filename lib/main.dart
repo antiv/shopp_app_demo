@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shopp_app/pages/cart.dart';
 import 'package:shopp_app/pages/home.dart';
 import 'package:shopp_app/routes.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(const ProviderScope(child: MyApp()),);
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -16,24 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      // home: HomePage(title: 'Place order'),
-      onGenerateRoute: (settings) {
-        if (settings.name == Routes.cart) {
-          final args = settings.arguments as Map<String, dynamic>;
-          return MaterialPageRoute(
-            builder: (context) {
-              return Cart(
-                cart: args['cart'],
-                onRemove: args['onRemove'],
-              );
-            },
-          );
-        }
-      },
       initialRoute: Routes.home,
       routes: {
         Routes.home: (context) => const HomePage(title: 'Place order'),
-        // Routes.cart: (context) => Cart(),
+        Routes.cart: (context) => const Cart(),
       },
     );
   }
