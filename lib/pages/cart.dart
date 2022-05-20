@@ -7,7 +7,6 @@ class Cart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-
     final _cart = ref.watch(cartProvider);
     return Scaffold(
       appBar: AppBar(

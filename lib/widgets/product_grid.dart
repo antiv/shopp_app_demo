@@ -36,35 +36,31 @@ class ProductGrid extends ConsumerWidget {
                             fit: BoxFit.cover,
                             image: NetworkImage(item.image ??
                                 'http://dummyimage.com/100x100.png/000000/000000'))),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      // mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        FadeInImage.assetNetwork(
-                          width: 100.0,
-                          placeholder: 'assets/images/loader.gif',
-                          image: item.image ??
-                              'http://dummyimage.com/100x100.png/000000/000000',
-                        ),
-                        // Image.network(
-                        //   item.image ??
-                        //       'http://dummyimage.com/100x100.png/000000/000000',
-                        //   // scale: 0.4,
-                        // ),
-                        Container(
-                          color: Colors.white38,
-                          width: double.infinity,
-                          height: 60,
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            item.name ?? '',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headline6,
-                            maxLines: 2,
-                          ),
-                        )
-                      ],
+                    child: LayoutBuilder(
+                        builder: (context, constraints)  {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 1,),
+                            Container(
+                              color: Colors.white38,
+                              width: double.infinity,
+                              height: constraints.maxHeight / 3,
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(
+                                  item.name ?? '',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.headline6,
+                                  maxLines: 2,
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      }
                     ),
                   ),
                   Padding(
@@ -74,7 +70,7 @@ class ProductGrid extends ConsumerWidget {
                     ),
                     child: Align(
                       alignment: Alignment.bottomRight,
-                      child: GestureDetector(
+                      child: InkWell(
                         child: (!_cartList.contains(item))
                             ? const Icon(
                           Icons.add_circle,
@@ -89,7 +85,7 @@ class ProductGrid extends ConsumerWidget {
                           if (!_cartList.contains(item)) {
                             _cart.addToCart(item);
                             // _cartList.add(item);
-                            // ref.read(cartProvider.notifier).state.add(item);
+                            // ref.read(cartProvider.notifier).products.add(item);
                           } else {
                             _cart.removeFromCart(item);
                             // _cartList.remove(item);

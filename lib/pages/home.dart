@@ -33,25 +33,26 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     _cart = ref.watch(cartProvider);
-    List<Product> _cartList = _cart?.products ?? [];
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        actions: [
-          CartIcon(cart: _cart, cartList: _cartList)
+        actions: const [
+          CartIcon()
         ],
       ),
       body: //_buildGridView()
           _products.isNotEmpty
-              ? RefreshIndicator(onRefresh: () { _cartList.clear(); return _populateProducts(); },
+              ? RefreshIndicator(onRefresh: () { _cart?.removeAllCart(); return _populateProducts(); },
               child: ProductGrid(products: _products,))
-              : Center(child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  CircularProgressIndicator(),
-                ],
-              )), // _buildListView(),
+              : Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              ), // _buildListView(),
     );
   }
 

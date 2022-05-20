@@ -1,25 +1,25 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/cart.dart';
+
 import '../models/product.dart';
+import '../providers/cart_provider.dart';
 import '../routes.dart';
 
-class CartIcon extends StatelessWidget {
+class CartIcon extends ConsumerWidget {
   const CartIcon({
     Key? key,
-    required Cart? cart,
-    required List<Product> cartList,
-  }) : _cart = cart, _cartList = cartList, super(key: key);
+  }) : super(key: key);
 
-  final Cart? _cart;
-  final List<Product> _cartList;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final _cart = ref.watch(cartProvider);
+    List<Product> _cartList = _cart.products;
     return Row(
       children: [
-        Text(_cart?.total.toStringAsFixed(2) ?? '0.00'),
+        Text(_cart.total.toStringAsFixed(2)),
         Padding(
           padding: const EdgeInsets.only(right: 16.0, top: 8.0),
           child: GestureDetector(
