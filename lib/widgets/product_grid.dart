@@ -26,7 +26,6 @@ class _ProductGridState extends ConsumerState<ProductGrid> {
   Widget build(BuildContext context) {
     final _cart = ref.watch(cartProvider);
     List<Product> _cartList = _cart.products;
-    int next = rng.nextInt(7);
     return GridView.builder(
         padding: const EdgeInsets.all(8.0),
         gridDelegate:
@@ -50,20 +49,21 @@ class _ProductGridState extends ConsumerState<ProductGrid> {
                           barrierColor: Colors.black.withOpacity(0.4),
                           barrierLabel: '',
                           transitionBuilder: (context, anim1, anim2, child) {
-                            List<Offset> offsets = [
-                              Offset(0, anim1.value * 500 - 500),
-                              Offset(anim1.value * 500 - 500, anim1.value * 500 - 500),
-                              Offset(anim1.value * 500 - 500, 0),
-                              Offset(anim1.value * -500 + 500, 0),
-                              Offset(0, anim1.value * -500 + 500),
-                              Offset(anim1.value * -500 + 500, anim1.value * 500 - 500),
-                              Offset(anim1.value * -500 + 500, anim1.value * -500 + 500),
-                              Offset(anim1.value * 500 - 500, anim1.value * -500 + 500),
-                            ];
+                            // List<Offset> offsets = [
+                            //   Offset(0, anim1.value * 500 - 500),
+                            //   Offset(anim1.value * 500 - 500, anim1.value * 500 - 500),
+                            //   Offset(anim1.value * 500 - 500, 0),
+                            //   Offset(anim1.value * -500 + 500, 0),
+                            //   Offset(0, anim1.value * -500 + 500),
+                            //   Offset(anim1.value * -500 + 500, anim1.value * 500 - 500),
+                            //   Offset(anim1.value * -500 + 500, anim1.value * -500 + 500),
+                            //   Offset(anim1.value * 500 - 500, anim1.value * -500 + 500),
+                            // ];
+                            // print(anim1);
                             return Transform.rotate(
                               angle: math.radians(anim1.value * 360),
                               // scale: anim1.value,
-                              // offset: offsets[next],
+                              // offset: offsets[5],
                               child: Opacity(
                                 opacity: anim1.value,
                                 child: AlertDialog(
@@ -103,7 +103,7 @@ class _ProductGridState extends ConsumerState<ProductGrid> {
                       child: InkWell(
                         child:
                         AnimatedSwitcher(
-                          switchInCurve: Curves.easeInOutBack,
+                          switchInCurve: Curves.easeOutBack,
                           duration: const Duration(milliseconds: 650),
                           transitionBuilder: (Widget child, Animation<double> animation) {
                             return ScaleTransition(scale: animation, child: child);
