@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
-import '../models/product.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/cart_provider.dart';
 
-class Cart extends StatefulWidget {
-  final List<Product> cart;
-  final Function(Product)? onRemove;
-
-  const Cart({Key? key, required this.cart, this.onRemove}) : super(key: key);
+class Cart extends ConsumerWidget {
+  const Cart({Key? key}) : super(key: key);
 
   @override
-  _CartState createState() => _CartState();
-}
-
-class _CartState extends State<Cart> {
-
-  @override
-  Widget build(BuildContext context) {
-
-    List<Product> _cart = widget.cart;
+  Widget build(BuildContext context, ref) {
+    final _cart = ref.watch(cartProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cart'),
+        actions: [Center(child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Text(_cart.total.toStringAsFixed(2)),
+        ))],
       ),
       body: ListView.builder(
-          itemCount: _cart.length,
+          itemCount: _cart.products.length,
           itemBuilder: (context, index) {
-            var item = _cart[index];
+            var item = _cart.products[index];
             return Padding(
               padding:
               const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
@@ -39,21 +34,27 @@ class _CartState extends State<Cart> {
                     ),
                   ),
                   title: Text(item.name ?? ''),
+                  subtitle: Text(item.price?.toStringAsFixed(2) ?? '0.00'),
                   trailing: GestureDetector(
                       child: const Icon(
                         Icons.remove_circle,
                         color: Colors.red,
                       ),
                       onTap: () {
-                        if (widget.onRemove != null) widget.onRemove!(item);
-                        setState(() {
-                          _cart.remove(item);
-                        });
+                        _cart.removeFromCart(item);
                       }),
                 ),
               ),
             );
           }),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // Show alert with order details
+        },
+        label: const Text('Poruci'),
+        icon: const Icon(Icons.phone_in_talk),
+        // backgroundColor: Colors.pink,
+      ),
     );
   }
 }
